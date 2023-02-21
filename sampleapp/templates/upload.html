@@ -1,0 +1,101 @@
+{% comment %} <!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    
+</head>
+<body>
+     <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+     <button type="submit"> Upload Image </button>
+    
+    <div class="row">
+        {% for x in data %}
+        <div class="col-md-4">
+          <div class="thumbnail">
+            <a href="{{ x.photo.url }}">
+              <img src="{{ x.photo.url }}" alt="Lights" style="width:100%">
+              <div class="caption">
+                <p>{{ x.title }}</p>
+                <form method="post">
+                  {% csrf_token %}
+                  <button type="submit" name="like" value="{{ x.id }}" class="btn btn-primary">
+                      Like ({{ x.likes }})
+                  </button>
+                  <button type="submit" name="dislike" value="{{ x.id }}" class="btn btn-secondary">
+                      Dislike ({{ x.dislikes }})
+                  </button>
+                </form>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </form>
+      <script src="{% static 'js/jquery.js' %}"></script>
+      <script src="{% static 'js/poper.js' %}"></script>
+      <script src="{% static 'js/all.min.js' %}"></script>
+      <script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    
+</head>
+<body>
+     <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+     <button type="submit"> Upload Image </button>
+    </form>
+    
+    <div class="row">
+        {% for x in data %}
+        <div class="col-md-4">
+          <div class="thumbnail">
+            {% comment %} <a href="{{ x.photo.url }}"> {% endcomment %}
+              <img src="{{ x.photo.url }}" alt="Lights" style="width:100%">
+              <div class="caption">
+                <p>{{ x.title }}</p>
+                <form method="POST" action="{% url 'like_image' x.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary">
+                      Like ({{ x.likes }})
+                  </button>
+               </form>
+               <form method="POST" action="{% url 'dislike_image' x.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-secondary">
+                      Dislike ({{ x.dislikes }})
+                  </button>
+              </form>
+              </div>
+            {% comment %} </a> {% endcomment %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+  
+      <script src="{% static 'js/jquery.js' %}"></script>
+      <script src="{% static 'js/poper.js' %}"></script>
+      <script src="{% static 'js/all.min.js' %}"></script>
+      <script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>
